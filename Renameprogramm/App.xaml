@@ -1,0 +1,14 @@
+﻿<Application
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Renameprogramm"
+             xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Renameprogramm.App"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <Thickness x:Key="GrpupBoxInterna">0,3,0,0</Thickness>
+
+        <System:Double x:Key="TextBoxHeigt">20</System:Double>
+
+    </Application.Resources>
+</Application>

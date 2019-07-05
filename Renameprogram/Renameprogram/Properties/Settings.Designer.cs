@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Renameprogramm.Properties
+namespace Renameprogram.Properties
 {
 
 

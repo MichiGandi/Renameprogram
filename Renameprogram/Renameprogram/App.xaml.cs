@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Renameprogramm
+namespace Renameprogram
 {
     /// <summary>
     /// Interaktionslogik für "App.xaml"

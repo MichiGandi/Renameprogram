@@ -6,119 +6,132 @@
         xmlns:local="clr-namespace:Renameprogram"
         xmlns:eisiWare="clr-namespace:eisiWare;assembly=NumericUpDown"
         mc:Ignorable="d"
-        Title="Renameprogramm" Height="600" Width="800" MinWidth="800" MinHeight="500" Background="#FFF0F0F0">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TabControl x:Name="tabControl_Copy" Margin="10" Grid.Row="1" VerticalAlignment="Top" Height="233">
-            <TabItem Header="TabItem">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="160"/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox x:Name="groupBox1" Header="GroupBox" Margin="10,10,0,0" VerticalAlignment="Top" Height="46">
-                        <TextBox x:Name="textBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}"/>
-                    </GroupBox>
-                    <Button x:Name="button1" Content="Button" Margin="10" Grid.Column="1" Grid.RowSpan="2"/>
-                    <GroupBox x:Name="groupBox2" Header="GroupBox" Margin="10,10,0,10" Grid.Row="1" VerticalAlignment="Top">
-                        <Grid Margin="{DynamicResource GrpupBoxInterna}" VerticalAlignment="Top">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <GroupBox x:Name="groupBox3" Header="GroupBox" VerticalAlignment="Top" HorizontalAlignment="Left" Height="78" Width="281">
-                                <Grid Margin="{DynamicResource GrpupBoxInterna}" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <eisiWare:NumericUpDown Height="20" Margin="10,0,0,0" Width="70" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                    <eisiWare:NumericUpDown HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-                                    <eisiWare:NumericUpDown HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center"/>
-                                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="70" Grid.Column="3" Height="22">
-                                        <ComboBoxItem Content="Keine"/>
-                                        <ComboBoxItem Content="Null"/>
-                                        <ComboBoxItem Content="Leer"/>
-                                        <ComboBoxItem Content="Unterstrich"/>
-                                    </ComboBox>
-                                    <TextBlock x:Name="textBlock" Grid.Column="2" Margin="10,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                    <TextBlock x:Name="textBlock_Copy" Grid.Column="2" Margin="10,12,0,2" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1"/>
-                                    <TextBlock x:Name="textBlock_Copy1" Margin="0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                    <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="0,12,0,2" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
-                                </Grid>
-                            </GroupBox>
-                            <GroupBox x:Name="groupBox4" Grid.Column="1" Header="GroupBox" Margin="10,0,0,0">
-                                <TextBlock x:Name="textBlock2" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
-                            </GroupBox>
-                            <CheckBox x:Name="checkBox1" Content="CheckBox" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="15" Width="71"/>
-                        </Grid>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-            <TabItem Header="TabItem">
-                <Grid/>
-            </TabItem>
-            <TabItem Header="TabItem">
-                <Grid/>
-            </TabItem>
-        </TabControl>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="170"/>
-            </Grid.ColumnDefinitions>
-            <GroupBox x:Name="groupBox" Header="GroupBox" Margin="10,10,0,0">
-                <ListView x:Name="listView" Margin="{DynamicResource GrpupBoxInterna}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="01" Width="100"/>
-                            <GridViewColumn Header="02" Width="100"/>
-                            <GridViewColumn Header="03" Width="100"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </GroupBox>
-            <Grid Grid.Column="1" Height="195" VerticalAlignment="Top" Margin="0,10,10,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="button" Content="Button" Margin="10,0,0,10" Grid.ColumnSpan="2"/>
-                <Button x:Name="button_Copy" Content="Button" Margin="10,0,0,10" Grid.Row="1"/>
-                <Button x:Name="button_Copy1" Content="Button" Margin="10,0,0,10" Grid.Column="1" Grid.Row="1"/>
-                <Button x:Name="button_Copy2" Content="Button" Margin="10,0,0,10" Grid.Row="2"/>
-                <Button x:Name="button_Copy3" Content="Button" Margin="10,0,0,10" Grid.Row="2" Grid.Column="1"/>
-                <CheckBox x:Name="checkBox" Content="CheckBox" Grid.Row="3" Height="15" VerticalAlignment="Top" Margin="10,0,0,0" Grid.ColumnSpan="2"/>
+        Title="Renameprogram" Height="600" Width="800" MinWidth="800" MinHeight="500" Background="#FFF0F0F0" Loaded="Main_Loaded">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<TabControl x:Name="mainTabControl" Margin="10" Grid.Row="1" VerticalAlignment="Top" Height="233" SelectedIndex="0" SelectionChanged="UpdateNewFileNames">
+			<TabItem x:Name="normalTabItem" Header="Allgemein">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="160"/>
+					</Grid.ColumnDefinitions>
+					<GroupBox x:Name="normal_newNameGroupBox" Header="neuer Name" Margin="10,10,0,0" VerticalAlignment="Top" Height="46">
+						<TextBox x:Name="normal_newFileNameTextBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" Text="[NAME]" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}" TextChanged="UpdateNewFileNames"/>
+					</GroupBox>
+					<Button x:Name="normal_renameButton" Content="Umbenennen" Margin="10" Grid.Column="1" Grid.RowSpan="2" FontWeight="Bold" Click="Normal_renameButton_Click"/>
+					<GroupBox x:Name="normal_optionsGroupBox" Header="Optionen" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top">
+						<Grid Margin="{DynamicResource GrpupBoxInterna}" VerticalAlignment="Top">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="200"/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<GroupBox x:Name="normal_counterGroupBox" Header="Zähler" VerticalAlignment="Top" HorizontalAlignment="Left">
+								<Grid Margin="{DynamicResource GrpupBoxInterna}" HorizontalAlignment="Left" VerticalAlignment="Top">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<eisiWare:NumericUpDown x:Name="normal_startvalueNumericUpDown" Height="20" Margin="10,0,0,0" Width="70" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Value="1" ValueChanged="UpdateNewFileNames"/>
+									<eisiWare:NumericUpDown x:Name="normal_stepsizeNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Value="1" ValueChanged="UpdateNewFileNames"/>
+									<eisiWare:NumericUpDown x:Name="normal_leadingzeroslengthNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Value="2" ValueChanged="UpdateNewFileNames"/>
+									<ComboBox x:Name="normal_leadingzerosTypeComboBox" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="70" Grid.Column="3" Height="22" SelectionChanged="UpdateNewFileNames">
+										<ComboBoxItem Content="Keine"/>
+										<ComboBoxItem Content="Null" IsSelected="True"/>
+										<ComboBoxItem Content="Leer"/>
+										<ComboBoxItem Content="Unterstrich"/>
+									</ComboBox>
+									<TextBlock x:Name="normal_leadingzerosTypeLabel" Grid.Column="2" Margin="10,0,0,0" TextWrapping="Wrap" Text="Vornullen" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+									<TextBlock x:Name="normal_leadingzeroslengthLabel" Grid.Column="2" Margin="10,12,0,2" TextWrapping="Wrap" Text="Länge" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"/>
+									<TextBlock x:Name="normal_startvalueLabel" Margin="0" TextWrapping="Wrap" Text="Startwert" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+									<TextBlock x:Name="normal_stepsizeLabel" HorizontalAlignment="Right" Margin="0,12,0,2" Grid.Row="1" TextWrapping="Wrap" Text="Schrittweite" VerticalAlignment="Center"/>
+								</Grid>
+							</GroupBox>
+							<GroupBox x:Name="normal_maskGroupBox" Grid.Column="1" Header="Masken" Margin="10,0,0,0">
+								<Grid Margin="{DynamicResource GrpupBoxInterna}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition/>
+									</Grid.ColumnDefinitions>
+									<TextBlock x:Name="normal_mask1Label" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Height="54" Text="[NAME]&#xA;[C]"/>
+									<TextBlock x:Name="normal_mask2Label" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Height="54" Grid.Column="1" Text="-&#xA;-" Margin="5,0"/>
+									<TextBlock x:Name="normal_mask3Label" TextWrapping="Wrap" VerticalAlignment="Top" Height="55" Grid.Column="2" Margin="0" HorizontalAlignment="Left"><Run Text="alter Dateiname&#xA;Zähler   "/><LineBreak/><Run/></TextBlock>
+								</Grid>
+							</GroupBox>
+							<CheckBox x:Name="normal__randomOrderCheckBox" Content="zufällige Reihenfolge" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False"/>
+						</Grid>
+					</GroupBox>
+				</Grid>
+			</TabItem>
+			<TabItem x:Name="seriesTabItem" Header="Anime/Serien">
+				<Grid/>
+			</TabItem>
+			<TabItem x:Name="replaceTabItem" Header="Ersetzen">
+				<Grid/>
+			</TabItem>
+		</TabControl>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="61*"/>
+				<ColumnDefinition Width="561*"/>
+				<ColumnDefinition Width="170"/>
+			</Grid.ColumnDefinitions>
+			<GroupBox x:Name="fileGroupBox" Header="Dateien zum umbenennen" Margin="10,10,0,0" Grid.ColumnSpan="2">
+				<ListView x:Name="fileListView" Margin="{DynamicResource GrpupBoxInterna}" ItemsSource="{Binding files2}" IsSynchronizedWithCurrentItem="True" SelectionMode="Extended" AllowDrop="True" Drop="FileListView_Drop">
+					<ListView.View>
+						<GridView>
+							<GridViewColumn Header="Verzeichnis" Width="Auto" DisplayMemberBinding="{Binding directory}"/>
+							<GridViewColumn Header="Dateiname" Width="Auto" DisplayMemberBinding="{Binding filename}"/>
+							<GridViewColumn Header="neuer Dateiname" Width="Auto" DisplayMemberBinding="{Binding newFilename}"/>
+						</GridView>
+					</ListView.View>
+				</ListView>
+			</GroupBox>
+			<Grid Grid.Column="2" Height="255" VerticalAlignment="Top" Margin="0,10,10,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*"/>
+					<RowDefinition Height="1*"/>
+					<RowDefinition Height="1*"/>
+					<RowDefinition Height="Auto"/>
+
+					<RowDefinition Height="1*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<Button x:Name="selectFileButton" Content="Dateien Auswählen" Margin="10,0,0,10" Grid.ColumnSpan="2" Click="SelectFileButton_Click"/>
+				<Button x:Name="moveUpButton" Content="▲" Margin="10,0,0,10" Grid.Row="1" Click="MoveUpButton_Click"/>
+				<Button x:Name="deleteButton" Content="✖" Margin="10,0,0,10" Grid.Column="1" Grid.Row="1" Click="DeleteButton_Click"/>
+				<Button x:Name="moveDownButton" Content="▼" Margin="10,0,0,10" Grid.Row="2" Click="MoveDownButton_Click"/>
+				<Button x:Name="clearButton" Content="✖✖✖" Margin="10,0,0,10" Grid.Row="2" Grid.Column="1" Click="ClearButton_Click"/>
+				<CheckBox x:Name="sortAlphabeticCheckBox" Content="alphabetisch sortieren" Grid.Row="3" Height="15" VerticalAlignment="Top" Margin="10,0,0,0" Grid.ColumnSpan="2" Width="151" IsChecked="True"/>
+				<Button x:Name="debugButton" Content="Debug Test" Margin="10,10,0,0" Grid.ColumnSpan="2" Grid.Row="4" Visibility="{Binding IsDebug}" Click="DebugButton_Click"/>
 
 
-            </Grid>
-        </Grid>
-    </Grid>
+			</Grid>
+		</Grid>
+	</Grid>
 </Window>

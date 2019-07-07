@@ -10,5 +10,5 @@
 
         <System:Double x:Key="TextBoxHeigt">20</System:Double>
 
-    </Application.Resources>
+	</Application.Resources>
 </Application>

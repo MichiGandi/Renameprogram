@@ -15,7 +15,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
-		<TabControl x:Name="mainTabControl" Margin="10" Grid.Row="1" VerticalAlignment="Top" Height="233" SelectedIndex="0" SelectionChanged="UpdateNewFileNames">
+		<TabControl x:Name="mainTabControl" Margin="10" Grid.Row="1" VerticalAlignment="Top" Height="238" SelectedIndex="0" SelectionChanged="ControlElementChanged">
 			<TabItem x:Name="normalTabItem" Header="Allgemein">
 				<Grid>
 					<Grid.RowDefinitions>
@@ -27,10 +27,10 @@
 						<ColumnDefinition Width="160"/>
 					</Grid.ColumnDefinitions>
 					<GroupBox x:Name="normal_newNameGroupBox" Header="neuer Name" Margin="10,10,0,0" VerticalAlignment="Top" Height="46">
-						<TextBox x:Name="normal_newFileNameTextBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" Text="[NAME]" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}" TextChanged="UpdateNewFileNames"/>
+						<TextBox x:Name="normal_newFileNameTextBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" Text="[NAME]" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged"/>
 					</GroupBox>
 					<Button x:Name="normal_renameButton" Content="Umbenennen" Margin="10" Grid.Column="1" Grid.RowSpan="2" FontWeight="Bold" Click="Normal_renameButton_Click"/>
-					<GroupBox x:Name="normal_optionsGroupBox" Header="Optionen" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top">
+					<GroupBox x:Name="normal_optionsGroupBox" Header="Optionen" Margin="10,10,0,10" Grid.Row="1">
 						<Grid Margin="{DynamicResource GrpupBoxInterna}" VerticalAlignment="Top">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
@@ -38,14 +38,15 @@
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="200"/>
+								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition/>
 							</Grid.ColumnDefinitions>
-							<GroupBox x:Name="normal_counterGroupBox" Header="Zähler" VerticalAlignment="Top" HorizontalAlignment="Left">
-								<Grid Margin="{DynamicResource GrpupBoxInterna}" HorizontalAlignment="Left" VerticalAlignment="Top">
+							<GroupBox x:Name="normal_counterGroupBox" Header="Zähler" HorizontalAlignment="Left">
+								<Grid Margin="{DynamicResource GrpupBoxInterna}" HorizontalAlignment="Left">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto"/>
 										<RowDefinition Height="Auto"/>
+										<RowDefinition/>
 									</Grid.RowDefinitions>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
@@ -53,19 +54,19 @@
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
 									</Grid.ColumnDefinitions>
-									<eisiWare:NumericUpDown x:Name="normal_startvalueNumericUpDown" Height="20" Margin="10,0,0,0" Width="70" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Value="1" ValueChanged="UpdateNewFileNames"/>
-									<eisiWare:NumericUpDown x:Name="normal_stepsizeNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Value="1" ValueChanged="UpdateNewFileNames"/>
-									<eisiWare:NumericUpDown x:Name="normal_leadingzeroslengthNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Value="2" ValueChanged="UpdateNewFileNames"/>
-									<ComboBox x:Name="normal_leadingzerosTypeComboBox" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="70" Grid.Column="3" Height="22" SelectionChanged="UpdateNewFileNames">
-										<ComboBoxItem Content="Keine"/>
-										<ComboBoxItem Content="Null" IsSelected="True"/>
-										<ComboBoxItem Content="Leer"/>
-										<ComboBoxItem Content="Unterstrich"/>
+									<eisiWare:NumericUpDown x:Name="normal_counterStartvalueNumericUpDown" Height="20" Margin="10,0,0,0" Width="70" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Value="1" ValueChanged="ControlElementChanged"/>
+									<eisiWare:NumericUpDown x:Name="normal_counterStepsizeNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Value="1" ValueChanged="ControlElementChanged"/>
+									<eisiWare:NumericUpDown x:Name="normal_counterLeadingzerosLengthNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Value="2" ValueChanged="ControlElementChanged"/>
+									<ComboBox x:Name="normal_counterLeadingzerosTypeComboBox" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="70" Grid.Column="3" Height="22" SelectionChanged="ControlElementChanged">
+										<ComboBoxItem x:Name="normal_counterLeadingzerosTypeNoneComboBoxItem" Content="Keine"/>
+										<ComboBoxItem x:Name="normal_counterLeadingzerosTypeZeroComboBoxItem" Content="Null" IsSelected="True"/>
+										<ComboBoxItem x:Name="normal_counterLeadingzerosTypeSpaceComboBoxItem" Content="Leer"/>
+										<ComboBoxItem x:Name="normal_counterLeadingzerosTypeUnderscoreComboBoxItem" Content="Unterstrich"/>
 									</ComboBox>
-									<TextBlock x:Name="normal_leadingzerosTypeLabel" Grid.Column="2" Margin="10,0,0,0" TextWrapping="Wrap" Text="Vornullen" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-									<TextBlock x:Name="normal_leadingzeroslengthLabel" Grid.Column="2" Margin="10,12,0,2" TextWrapping="Wrap" Text="Länge" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"/>
-									<TextBlock x:Name="normal_startvalueLabel" Margin="0" TextWrapping="Wrap" Text="Startwert" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-									<TextBlock x:Name="normal_stepsizeLabel" HorizontalAlignment="Right" Margin="0,12,0,2" Grid.Row="1" TextWrapping="Wrap" Text="Schrittweite" VerticalAlignment="Center"/>
+									<TextBlock x:Name="normal_counterLeadingzerosTypeTextBlock" Grid.Column="2" Margin="10,0,0,0" TextWrapping="Wrap" Text="Vornullen" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+									<TextBlock x:Name="normal_counterLeadingzerosLengthTextBlock" Grid.Column="2" Margin="10,12,0,2" TextWrapping="Wrap" Text="Länge" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"/>
+									<TextBlock x:Name="normal_counterStartvalueTextBlock" Margin="0" TextWrapping="Wrap" Text="Startwert" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+									<TextBlock x:Name="normal_counterStepsizeTextBlock" HorizontalAlignment="Right" Margin="0,12,0,2" Grid.Row="1" TextWrapping="Wrap" Text="Schrittweite" VerticalAlignment="Center"/>
 								</Grid>
 							</GroupBox>
 							<GroupBox x:Name="normal_maskGroupBox" Grid.Column="1" Header="Masken" Margin="10,0,0,0">
@@ -75,9 +76,9 @@
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition/>
 									</Grid.ColumnDefinitions>
-									<TextBlock x:Name="normal_mask1Label" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Height="54" Text="[NAME]&#xA;[C]"/>
-									<TextBlock x:Name="normal_mask2Label" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Height="54" Grid.Column="1" Text="-&#xA;-" Margin="5,0"/>
-									<TextBlock x:Name="normal_mask3Label" TextWrapping="Wrap" VerticalAlignment="Top" Height="55" Grid.Column="2" Margin="0" HorizontalAlignment="Left"><Run Text="alter Dateiname&#xA;Zähler   "/><LineBreak/><Run/></TextBlock>
+									<TextBlock x:Name="normal_mask1TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Height="54" Text="[NAME]&#xA;[C]"/>
+									<TextBlock x:Name="normal_mask2TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Height="54" Grid.Column="1" Text="-&#xA;-" Margin="5,0"/>
+									<TextBlock x:Name="normal_mask3TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="55" Grid.Column="2" Margin="0" HorizontalAlignment="Left"><Run Text="alter Dateiname&#xA;Zähler   "/><LineBreak/><Run/></TextBlock>
 								</Grid>
 							</GroupBox>
 							<CheckBox x:Name="normal__randomOrderCheckBox" Content="zufällige Reihenfolge" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False"/>
@@ -86,7 +87,108 @@
 				</Grid>
 			</TabItem>
 			<TabItem x:Name="seriesTabItem" Header="Anime/Serien">
-				<Grid/>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="160"/>
+					</Grid.ColumnDefinitions>
+					<GroupBox x:Name="series_newNameGroupBox" Header="neuer Name" Margin="10,10,0,0" VerticalAlignment="Top">
+						<Grid Margin="{DynamicResource GrpupBoxInterna}">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<TextBox x:Name="series_newNameSeriesNameTextBox" Margin="0" TextWrapping="Wrap" Text="[NAME]" VerticalAlignment="Center" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged"/>
+							<TextBlock x:Name="series_newNameEpisodeTextBlock" Margin="10,0,0,0" TextWrapping="Wrap" Text="Folge" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1"/>
+							<TextBlock x:Name="series_newNameCounterTextBlock" Margin="10,0,0,0" TextWrapping="Wrap" Text="[Zähler]" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2"/>
+							<ComboBox x:Name="series_newNameLangugageComboBox" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" SelectionChanged="ControlElementChanged" Grid.Column="3" Width="77">
+								<ComboBoxItem Content="Ohne"/>
+								<ComboBoxItem Content="[GerSub]" IsSelected="True"/>
+								<ComboBoxItem Content="[GerDub]"/>
+								<ComboBoxItem Content="[EngSub]"/>
+								<ComboBoxItem Content="[EngDub]"/>
+							</ComboBox>
+							<CheckBox x:Name="series_newNameMinusCheckBox" Content="-" Grid.Column="4" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Unchecked="ControlElementChanged" Checked="ControlElementChanged"/>
+							<CheckBox x:Name="series_newNameEpisodeTitleCheckBox" Content="Episoden Titel" Grid.Column="5" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Checked="ControlElementChanged" Unchecked="ControlElementChanged"/>
+						</Grid>
+					</GroupBox>
+					<Button x:Name="series_RenameButton" Content="Umbenennen" Margin="10" Grid.Column="1" Grid.RowSpan="2" FontWeight="Bold" Click="Normal_renameButton_Click"/>
+					<GroupBox x:Name="series_optionsGroupBox" Header="Optionen" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="132">
+						<Grid Margin="{DynamicResource GrpupBoxInterna}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="24"/>
+								<ColumnDefinition Width="35"/>
+								<ColumnDefinition Width="235"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<GroupBox x:Name="series_counterGroupBox" Header="Zähler" HorizontalAlignment="Left" Grid.ColumnSpan="3">
+								<Grid Margin="{DynamicResource GrpupBoxInterna}">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition/>
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<eisiWare:NumericUpDown x:Name="series_counterStartvalueNumericUpDown" Height="20" Margin="10,0,0,0" Width="70" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Value="1" ValueChanged="ControlElementChanged"/>
+									<eisiWare:NumericUpDown x:Name="series_counterStepsizeNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Value="1" ValueChanged="ControlElementChanged"/>
+									<eisiWare:NumericUpDown x:Name="series_counterLeadingzerosLengthNumericUpDown" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" Width="70" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Value="2" ValueChanged="ControlElementChanged"/>
+									<ComboBox x:Name="series_counterLeadingzerosTypeComboBox" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="70" Grid.Column="3" Height="22" SelectionChanged="ControlElementChanged">
+										<ComboBoxItem Content="Keine"/>
+										<ComboBoxItem Content="Null" IsSelected="True"/>
+										<ComboBoxItem Content="Leer"/>
+										<ComboBoxItem Content="Unterstrich"/>
+									</ComboBox>
+									<TextBlock x:Name="series_counterLeadingzerosTypeTextBlock" Grid.Column="2" Margin="10,0,0,0" TextWrapping="Wrap" Text="Vornullen" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+									<TextBlock x:Name="series_counterLeadingzerosLengthTextBlock" Grid.Column="2" Margin="10,12,0,2" TextWrapping="Wrap" Text="Länge" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"/>
+									<TextBlock x:Name="series_counterStartvalueTextBlock" Margin="0" TextWrapping="Wrap" Text="Startwert" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+									<TextBlock x:Name="series_counterStepsizeTextBlock" HorizontalAlignment="Right" Margin="0,12,0,2" Grid.Row="1" TextWrapping="Wrap" Text="Schrittweite" VerticalAlignment="Center"/>
+								</Grid>
+							</GroupBox>
+							<GroupBox x:Name="series_EpisodeTitleGroupBox" Grid.Column="3" Header="Episoden Titel" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="92" Width="240">
+								<Grid Margin="{DynamicResource GrpupBoxInterna}" VerticalAlignment="Top">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<Button x:Name="series_EpisodeTitleButton" Content="Titel Einfügen" HorizontalAlignment="Left" Width="100"/>
+									<GroupBox x:Name="series_EpisodeTitleSourceGroupBox" Grid.Column="1" Header="Quelle" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+										<Grid Margin="{DynamicResource GrpupBoxInterna}" HorizontalAlignment="Left" VerticalAlignment="Top">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="Auto"/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto"/>
+												<RowDefinition Height="Auto"/>
+											</Grid.RowDefinitions>
+											<RadioButton x:Name="series_EpisodeTitleSourceRandarisRadioButton" Content="Randaris" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+											<RadioButton x:Name="series_EpisodeTitleSourceBSRadioButton" Content="BS" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="10,0,0,0"/>
+											<RadioButton x:Name="series_EpisodeTitleSourceAniSearchRadioButton" Content="Ani Search" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0" Grid.Row="1" Grid.ColumnSpan="2"/>
+										</Grid>
+									</GroupBox>
+								</Grid>
+							</GroupBox>
+						</Grid>
+					</GroupBox>
+				</Grid>
 			</TabItem>
 			<TabItem x:Name="replaceTabItem" Header="Ersetzen">
 				<Grid/>

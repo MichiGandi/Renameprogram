@@ -262,21 +262,21 @@ namespace Renameprogram
 		////<param name="fileList">The list to remove doubled files from.</param>
 		private void UpdateNewFileNames()
 		{
-			if (((TabItem)mainTabControl.SelectedItem).Name == "normalTabItem")
+			if (ReferenceEquals(mainTabControl.SelectedItem, normalTabItem))
 			{
 				for (int i = 0; i < files2.Count; i++)
 				{
 					Normal_updateFileName(files2[i], i);
 				}
 			}
-			else if (((TabItem)mainTabControl.SelectedItem).Name == "seriesTabItem")
+			else if (ReferenceEquals(mainTabControl.SelectedItem, seriesTabItem))
 			{
 				for (int i = 0; i < files2.Count; i++)
 				{
 					//files[i].newFilename = Series_updateFileName(files[i].filename);
 				}
 			}
-			else if (((TabItem)mainTabControl.SelectedItem).Name == "replaceTabItem")
+			else if (ReferenceEquals(mainTabControl.SelectedItem, replaceTabItem))
 			{
 				for (int i = 0; i < files2.Count; i++)
 				{
@@ -288,10 +288,11 @@ namespace Renameprogram
 		}
 
 
-		private void UpdateNewFileNames(object sender, EventArgs e)
+		private void ControlElementChanged(object sender, EventArgs e)
 		{
 			if (finishedInitializeComponent)
 			{
+				//if sender is a TextBox
 				if (!ReferenceEquals(sender as TextBox, null))
 				{
 					((TextBox)sender).Text = RemoveIllegalChars(((TextBox)sender).Text);
@@ -332,18 +333,18 @@ namespace Renameprogram
 			string counterString; //Zeichenfolge der Dateinummer + Vornullen
 
 			//calculate counter
-			counterString = ((int)normal_startvalueNumericUpDown.Value + pos * (int)normal_stepsizeNumericUpDown.Value).ToString();
-			while (counterString.Length < normal_leadingzeroslengthNumericUpDown.Value && normal_leadingzerosTypeComboBox.Text != "Keine")
+			counterString = ((int)normal_counterStartvalueNumericUpDown.Value + pos * (int)normal_counterStepsizeNumericUpDown.Value).ToString();
+			while (counterString.Length < normal_counterLeadingzerosLengthNumericUpDown.Value && !ReferenceEquals((ComboBoxItem)normal_counterLeadingzerosTypeComboBox.SelectedItem, normal_counterLeadingzerosTypeNoneComboBoxItem))
 			{
-				if (normal_leadingzerosTypeComboBox.Text == "Null")
+				if (ReferenceEquals((ComboBoxItem)normal_counterLeadingzerosTypeComboBox.SelectedItem, normal_counterLeadingzerosTypeZeroComboBoxItem))
 				{
 					counterString = "0" + counterString;
 				}
-				else if (normal_leadingzerosTypeComboBox.Text == "Leerzeichen")
+				else if (ReferenceEquals((ComboBoxItem)normal_counterLeadingzerosTypeComboBox.SelectedItem, normal_counterLeadingzerosTypeSpaceComboBoxItem))
 				{
 					counterString = " " + counterString;
 				}
-				else if (normal_leadingzerosTypeComboBox.Text == "Unterstrich")
+				else if (ReferenceEquals((ComboBoxItem)normal_counterLeadingzerosTypeComboBox.SelectedItem, normal_counterLeadingzerosTypeUnderscoreComboBoxItem))
 				{
 					counterString = "_" + counterString;
 				}

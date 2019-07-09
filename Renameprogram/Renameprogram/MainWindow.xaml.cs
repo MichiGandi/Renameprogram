@@ -63,7 +63,20 @@ namespace Renameprogram
 		}
 
 
-		//Fileselection =========================================================================
+		//General =========================================================================
+
+		private void FileListView_Drop(object sender, DragEventArgs e)
+		{
+			List<string> filesToAdd = ((string[])e.Data.GetData(DataFormats.FileDrop, true)).ToList();
+
+			if (sortAlphabeticCheckBox.IsChecked == true)
+			{
+				filesToAdd.Sort();
+			}
+
+			AddNewFiles(filesToAdd);
+		}
+
 
 		private void SelectFileButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -192,24 +205,7 @@ namespace Renameprogram
 
 			UpdateNewFileNames();
 		}
-
-
-		//fileListView DragDrop event
-		private void FileListView_Drop(object sender, DragEventArgs e)
-		{
-			List<string> filesToAdd = ((string[])e.Data.GetData(DataFormats.FileDrop, true)).ToList();
-
-			if (sortAlphabeticCheckBox.IsChecked == true)
-			{
-				filesToAdd.Sort();
-			}
-
-			AddNewFiles(filesToAdd);
-		}
-
-
-
-		//General Functions =========================================================================
+		
 
 		///<summary>Check for empty fileList or newFileNameTextBox and enabble or disable buttons.</summary>
 		private void EnableButtons()
@@ -221,6 +217,7 @@ namespace Renameprogram
 			deleteButton.IsEnabled = activate;
 			clearButton.IsEnabled = activate;
 			normal_renameButton.IsEnabled = activate && (normal_newFileNameTextBox.Text != "");
+			series_renameButton.IsEnabled = activate && (series_newFileNameSeriesNameTextBox.Text != "");
 		}
 
 
@@ -258,35 +255,6 @@ namespace Renameprogram
 			}
 		}
 
-		///<summary>Remove doubled files in a list.</summary>
-		////<param name="fileList">The list to remove doubled files from.</param>
-		private void UpdateNewFileNames()
-		{
-			if (ReferenceEquals(mainTabControl.SelectedItem, normalTabItem))
-			{
-				for (int i = 0; i < files2.Count; i++)
-				{
-					Normal_updateFileName(files2[i], i);
-				}
-			}
-			else if (ReferenceEquals(mainTabControl.SelectedItem, seriesTabItem))
-			{
-				for (int i = 0; i < files2.Count; i++)
-				{
-					//files[i].newFilename = Series_updateFileName(files[i].filename);
-				}
-			}
-			else if (ReferenceEquals(mainTabControl.SelectedItem, replaceTabItem))
-			{
-				for (int i = 0; i < files2.Count; i++)
-				{
-					//files[i].newFilename = Replace_updateFileName(files[i].filename);
-				}
-			}
-
-			fileListView.Items.Refresh();
-		}
-
 
 		private void ControlElementChanged(object sender, EventArgs e)
 		{
@@ -304,10 +272,37 @@ namespace Renameprogram
 		}
 
 
+		///<summary>Remove doubled files in a list.</summary>
+		////<param name="fileList">The list to remove doubled files from.</param>
+		private void UpdateNewFileNames()
+		{
+			if (ReferenceEquals(mainTabControl.SelectedItem, normalTabItem))
+			{
+				for (int i = 0; i < files2.Count; i++)
+				{
+					Normal_updateFileName(files2[i], i);
+				}
+			}
+			else if (ReferenceEquals(mainTabControl.SelectedItem, seriesTabItem))
+			{
+				for (int i = 0; i < files2.Count; i++)
+				{
+					Series_updateFileName(files2[i], i);
+				}
+			}
+			else if (ReferenceEquals(mainTabControl.SelectedItem, replaceTabItem))
+			{
+				for (int i = 0; i < files2.Count; i++)
+				{
+					//Replace_updateFileName(files2[i], i);
+				}
+			}
 
-		//Normal Tab =========================================================================
+			fileListView.Items.Refresh();
+		}
 
-		private void Normal_renameButton_Click(object sender, RoutedEventArgs e)
+
+		private void RenameButton_Click(object sender, RoutedEventArgs e)
 		{
 			//rename files
 
@@ -325,8 +320,32 @@ namespace Renameprogram
 		}
 
 
-		///<summary>Returns the Filename of File number [Counter].</summary>
-		///<param name="file">the string to remove illegal chars from.</param>
+		///<summary>Remove chars, that are illegal for file names from a string.</summary>
+		////<param name="fileList">the string to remove illegal chars from.</param>
+		public string RemoveIllegalChars(string stringToRemoveFrom)
+		{
+			//unzulässige zeichen entfernen:  \ / : * ? " < > | Tabstop
+			stringToRemoveFrom = stringToRemoveFrom.Replace("\\", ""); // \
+			stringToRemoveFrom = stringToRemoveFrom.Replace("/", "");  // /
+			stringToRemoveFrom = stringToRemoveFrom.Replace(":", "");  // :
+			stringToRemoveFrom = stringToRemoveFrom.Replace("*", "");  // *
+			stringToRemoveFrom = stringToRemoveFrom.Replace("?", "");  // ?
+			stringToRemoveFrom = stringToRemoveFrom.Replace("\"", ""); // "
+			stringToRemoveFrom = stringToRemoveFrom.Replace("<", "");  // <
+			stringToRemoveFrom = stringToRemoveFrom.Replace(">", "");  // >
+			stringToRemoveFrom = stringToRemoveFrom.Replace("|", "");  // |
+			stringToRemoveFrom = stringToRemoveFrom.Replace("\t", ""); // Tabstop
+
+			return stringToRemoveFrom;
+		}
+
+
+
+		//Normal Tab =========================================================================
+
+		///<summary>Updates the newFilemane Atrubute of the given FileElement.</summary>
+		///<param name="file">the FileElement to update newFilename.</param>
+		///<param name="pos">the position index in the files List.</param>
 		private void Normal_updateFileName(FileElement file, int pos)
 		{
 			string newFileName; //der neue Name der einer Datei zugewiesen werden soll
@@ -372,26 +391,202 @@ namespace Renameprogram
 		}
 
 
-		//General =========================================================================
 
-		///<summary>Remove chars, that are illegal for file names from a string.</summary>
-		////<param name="fileList">the string to remove illegal chars from.</param>
-		public string RemoveIllegalChars(string stringToRemoveFrom)
+		//Series Tab =========================================================================
+
+		static bool series_EnableEpisodeTitleControlElementsenabled = true;
+		///<summary>Check for checked CheckBoxes and enable or disable episode title control elements.</summary>
+		private void Series_EnableEpisodeTitleControlElements(object sender, RoutedEventArgs e)
 		{
-			//unzulässige zeichen entfernen:  \ / : * ? " < > | Tabstop
-			stringToRemoveFrom = stringToRemoveFrom.Replace("\\", ""); // \
-			stringToRemoveFrom = stringToRemoveFrom.Replace("/", "");  // /
-			stringToRemoveFrom = stringToRemoveFrom.Replace(":", "");  // :
-			stringToRemoveFrom = stringToRemoveFrom.Replace("*", "");  // *
-			stringToRemoveFrom = stringToRemoveFrom.Replace("?", "");  // ?
-			stringToRemoveFrom = stringToRemoveFrom.Replace("\"", ""); // "
-			stringToRemoveFrom = stringToRemoveFrom.Replace("<", "");  // <
-			stringToRemoveFrom = stringToRemoveFrom.Replace(">", "");  // >
-			stringToRemoveFrom = stringToRemoveFrom.Replace("|", "");  // |
-			stringToRemoveFrom = stringToRemoveFrom.Replace("\t", ""); // Tabstop
+			if (series_EnableEpisodeTitleControlElementsenabled && finishedInitializeComponent)
+			{
+				series_EnableEpisodeTitleControlElementsenabled = false;
 
-			return stringToRemoveFrom;
+				if (series_newFileNameMinusCheckBox.IsChecked == true)
+				{
+					//enable CheckBox
+					series_newFileNameEpisodeTitleCheckBox.IsEnabled = true;
+				}
+				else
+				{
+					//disable CheckBox
+					series_newFileNameEpisodeTitleCheckBox.IsChecked = false;
+					series_newFileNameEpisodeTitleCheckBox.IsEnabled = false;
+				}
+
+				if (series_newFileNameEpisodeTitleCheckBox.IsChecked == true)
+				{
+					//enable RadioButtons
+					series_episodeTitleSourceRandarisRadioButton.IsEnabled = true;
+					series_episodeTitleSourceBSRadioButton.IsEnabled = true;
+					series_episodeTitleSourceAniSearchRadioButton.IsEnabled = true;
+				}
+				else
+				{
+					//disable RadioButtons
+					series_episodeTitleSourceRandarisRadioButton.IsChecked = false;
+					series_episodeTitleSourceRandarisRadioButton.IsEnabled = false;
+					series_episodeTitleSourceBSRadioButton.IsChecked = false;
+					series_episodeTitleSourceBSRadioButton.IsEnabled = false;
+					series_episodeTitleSourceAniSearchRadioButton.IsChecked = false;
+					series_episodeTitleSourceAniSearchRadioButton.IsEnabled = false;
+				}
+
+				if ((series_episodeTitleSourceRandarisRadioButton.IsChecked == true) || (series_episodeTitleSourceBSRadioButton.IsChecked == true) || (series_episodeTitleSourceAniSearchRadioButton.IsChecked == true))
+				{
+					//enable Button
+					series_episodeTitleButton.IsEnabled = true;
+				}
+				else
+				{
+					//disable Button
+					series_episodeTitleButton.IsEnabled = false;
+				}
+
+				UpdateNewFileNames();
+
+				series_EnableEpisodeTitleControlElementsenabled = true;
+			}
 		}
+
+
+		///<summary>Updates the newFilemane Atrubute of the given FileElement.</summary>
+		///<param name="file">the FileElement to update newFilename.</param>
+		///<param name="pos">the position index in the files List.</param>
+		private void Series_updateFileName(FileElement file, int pos)
+		{
+			string fileName; //der neue Name der einer Datei zugewiesen werden soll
+			int episodeCounter = 0; //counter der die Episodennummer beschreibt (wird für den Episodentitel benötigt)
+			string episodeNumber; //Zeicenfolde der Episodennummer + Vornullen
+			string LanguageString; //Zeicenfolde des Sprachenzuweisung
+			string episodeTitle = ""; //Zeicenfolde des Namens der Episode
+
+			//calculate episodeNumber
+			episodeCounter = pos * (int)series_counterStepsizeNumericUpDown.Value + (int)series_counterStartvalueNumericUpDown.Value;
+			episodeNumber = episodeCounter.ToString();
+
+			while (episodeNumber.Length < series_counterLeadingzerosLengthNumericUpDown.Value && !ReferenceEquals((ComboBoxItem)series_counterLeadingzerosTypeComboBox.SelectedItem, series_counterLeadingzerosTypeNoneComboBoxItem))
+			{
+				if (ReferenceEquals((ComboBoxItem)series_counterLeadingzerosTypeComboBox.SelectedItem, series_counterLeadingzerosTypeZeroComboBoxItem))
+				{
+					episodeNumber = "0" + episodeNumber;
+				}
+				else if (ReferenceEquals((ComboBoxItem)series_counterLeadingzerosTypeComboBox.SelectedItem, series_counterLeadingzerosTypeSpaceComboBoxItem))
+				{
+					episodeNumber = " " + episodeNumber;
+				}
+				else if (ReferenceEquals((ComboBoxItem)series_counterLeadingzerosTypeComboBox.SelectedItem, series_counterLeadingzerosTypeUnderscoreComboBoxItem))
+				{
+					episodeNumber = "_" + episodeNumber;
+				}
+			}
+
+			//calculate Language
+			if (ReferenceEquals((ComboBoxItem)series_newFileNameLangugageComboBox.SelectedItem, series_newFileNameLangugageNoneComboBoxItem))
+			{
+				LanguageString = "";
+			}
+			else
+			{
+				LanguageString = " " + ((ComboBoxItem)series_newFileNameLangugageComboBox.SelectedItem).Content;				
+			}
+
+			//calculate EpisodeTitle
+			if ((series_newFileNameEpisodeTitleCheckBox.IsChecked == true) && EpisodeTitleBlock != null)
+			{
+				//Randaris
+				if (series_episodeTitleSourceRandarisRadioButton.IsChecked == true)
+				{
+					if (EpisodeTitleBlock.IndexOf("Episode " + episodeCounter.ToString() + "  ") != -1)
+					{
+						episodeTitle = EpisodeTitleBlock.Remove(0, EpisodeTitleBlock.IndexOf("Episode " + episodeCounter.ToString() + " ") + 10 + episodeCounter.ToString().Length);
+
+						if (episodeTitle.IndexOf(Environment.NewLine) != -1)
+						{
+							episodeTitle = episodeTitle.Remove(episodeTitle.IndexOf(Environment.NewLine));
+						}
+					}
+					else
+					{
+						episodeTitle = "";
+					}
+				}
+
+				//Ani Search
+				else if (series_episodeTitleSourceAniSearchRadioButton.IsChecked == true)
+				{
+					if (EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + "\t") != -1)
+					{
+						episodeTitle = EpisodeTitleBlock.Remove(0, EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + "\t"));
+						episodeTitle = episodeTitle.Remove(0, episodeTitle.IndexOf("\r\n") + 2); //remove "Episode"-Column
+						if (episodeTitle.IndexOf("Filler\t\r\n") == 0)
+						{
+							episodeTitle = episodeTitle.Remove(0, episodeTitle.IndexOf("\r\n") + 2); //remove "filler" banner
+						}
+						episodeTitle = episodeTitle.Remove(0, episodeTitle.IndexOf("\r\n") + 2); //remove "Laufzeit"-Column
+						episodeTitle = episodeTitle.Remove(0, episodeTitle.IndexOf("\r\n") + 2); //remove ""-Column
+						episodeTitle = episodeTitle.Remove(0, 2); //remove flag
+
+						if (episodeTitle.IndexOf(Environment.NewLine) != -1)
+						{
+							episodeTitle = episodeTitle.Remove(episodeTitle.IndexOf("\r\n"));
+						}
+					}
+					else
+					{
+						episodeTitle = "";
+					}
+				}
+
+
+				//BS
+				else if (series_episodeTitleSourceBSRadioButton.IsChecked == true)
+				{
+					if (EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + " " + "\t") != -1)
+					{
+						episodeTitle = EpisodeTitleBlock.Remove(0, EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + " " + "\t") + 2 + episodeCounter.ToString().Length);
+
+						if (episodeTitle.IndexOf(" " + "\t") != -1)
+						{
+							episodeTitle = episodeTitle.Remove(episodeTitle.IndexOf("\t"));
+						}
+					}
+					else
+					{
+						episodeTitle = "";
+					}
+				}
+				else
+				{
+					episodeTitle = "";
+				}
+			}
+			else
+			{
+				episodeTitle = "";
+			}
+
+			//join fileName
+			fileName = series_newFileNameSeriesNameTextBox.Text;
+			fileName += " Folge ";
+			fileName += episodeNumber;
+			fileName += LanguageString;
+			if (series_newFileNameMinusCheckBox.IsChecked == true)
+			{
+				fileName += " - ";
+			}
+			fileName += episodeTitle;
+
+			//remove illegal Characters
+			fileName = RemoveIllegalChars(fileName);
+
+			//Dateiendung hinzufügen
+			//fileName += System.IO.Path.GetExtension(file.GetFullPath());
+
+			file.newFilename = fileName;
+		}
+
+
 
 		//Debug =========================================================================
 		private void DebugButton_Click(object sender, RoutedEventArgs e)

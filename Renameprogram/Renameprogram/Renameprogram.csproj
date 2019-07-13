@@ -74,8 +74,9 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NumericUpDown">
-      <HintPath>..\..\..\..\..\Desktop\NumericUpDown\bin\Debug\NumericUpDown.dll</HintPath>
+    <Reference Include="NumericUpDown, Version=0.1.6.1, Culture=neutral, PublicKeyToken=74df933eb4e7b0ca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Externals\NumericUpDown.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

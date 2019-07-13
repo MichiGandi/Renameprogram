@@ -196,11 +196,10 @@
 		</TabControl>
 		<Grid>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="61*"/>
-				<ColumnDefinition Width="561*"/>
+				<ColumnDefinition/>
 				<ColumnDefinition Width="170"/>
 			</Grid.ColumnDefinitions>
-			<GroupBox x:Name="fileGroupBox" Header="Dateien zum umbenennen" Margin="10,10,0,0" Grid.ColumnSpan="2">
+			<GroupBox x:Name="fileGroupBox" Header="Dateien zum umbenennen" Margin="10,10,0,0">
 				<ListView x:Name="fileListView" Margin="{DynamicResource GrpupBoxInterna}" ItemsSource="{Binding files2}" IsSynchronizedWithCurrentItem="True" SelectionMode="Extended" AllowDrop="True" Drop="FileListView_Drop">
 					<ListView.View>
 						<GridView>
@@ -211,7 +210,7 @@
 					</ListView.View>
 				</ListView>
 			</GroupBox>
-			<Grid Grid.Column="2" Height="255" VerticalAlignment="Top" Margin="0,10,10,0">
+			<Grid Grid.Column="1" Height="255" VerticalAlignment="Top" Margin="0,10,10,0">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="1*"/>
 					<RowDefinition Height="1*"/>
@@ -231,8 +230,6 @@
 				<Button x:Name="clearButton" Content="✖✖✖" Margin="10,0,0,10" Grid.Row="2" Grid.Column="1" Click="ClearButton_Click"/>
 				<CheckBox x:Name="sortAlphabeticCheckBox" Content="alphabetisch sortieren" Grid.Row="3" Height="15" VerticalAlignment="Top" Margin="10,0,0,0" Grid.ColumnSpan="2" Width="151" IsChecked="True"/>
 				<Button x:Name="debugButton" Content="Debug Test" Margin="10,10,0,0" Grid.ColumnSpan="2" Grid.Row="4" Visibility="{Binding IsDebug}" Click="DebugButton_Click"/>
-
-
 			</Grid>
 		</Grid>
 	</Grid>

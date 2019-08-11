@@ -27,7 +27,6 @@ namespace Renameprogram
 		public List<FileElement> files2 { get; set; }
 		//List<string> files = new List<string>();
 		//List<string> newFileNames = new List<string>();
-		public string EpisodeTitleBlock;
 		private bool finishedInitializeComponent = false;
 		public static Visibility IsDebug
 		{
@@ -52,9 +51,10 @@ namespace Renameprogram
 		}
 
 
+
 		//Initialization =========================================================================
 
-		private void Main_Loaded(object sender, RoutedEventArgs e)
+		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
 			//setting initial values of Combo Boexes, no need since WPF
 			//Series_LangugageComboBox.SelectedIndex = 0;
@@ -218,6 +218,7 @@ namespace Renameprogram
 			clearButton.IsEnabled = activate;
 			normal_renameButton.IsEnabled = activate && (normal_newFileNameTextBox.Text != "");
 			series_renameButton.IsEnabled = activate && (series_newFileNameSeriesNameTextBox.Text != "");
+			replace_renameButton.IsEnabled = activate && (replace_searchTextBox.Text != "");
 		}
 
 
@@ -294,7 +295,7 @@ namespace Renameprogram
 			{
 				for (int i = 0; i < files2.Count; i++)
 				{
-					//Replace_updateFileName(files2[i], i);
+					Replace_updateFileName(files2[i], i);
 				}
 			}
 
@@ -308,7 +309,7 @@ namespace Renameprogram
 
 			for (int i = 0; i < files2.Count; i++)
 			{
-				System.IO.File.Move(files2[i].GetFullPath(), System.IO.Path.Combine(files2[i].directory, files2[i].newFilename));
+				System.IO.File.Move(files2[i].GetFullPath(), System.IO.Path.Combine(files2[i].GetDirectory(), files2[i].GetNewFilename()));
 			}
 
 			//Clear file list
@@ -348,8 +349,8 @@ namespace Renameprogram
 		///<param name="pos">the position index in the files List.</param>
 		private void Normal_updateFileName(FileElement file, int pos)
 		{
-			string newFileName; //der neue Name der einer Datei zugewiesen werden soll
-			string counterString; //Zeichenfolge der Dateinummer + Vornullen
+			string newFileName;
+			string counterString; //includes leading zeroes
 
 			//calculate counter
 			counterString = ((int)normal_counterStartvalueNumericUpDown.Value + pos * (int)normal_counterStepsizeNumericUpDown.Value).ToString();
@@ -369,32 +370,34 @@ namespace Renameprogram
 				}
 			}
 
-			//Dateinamen Ermitteln
+			//calculate newFilemame
 			newFileName = normal_newFileNameTextBox.Text;
 
-			//[NAME] ersetzen
+			//replace [NAME]
 			while (newFileName.IndexOf("[NAME]") != -1)
 			{
 				newFileName = newFileName.Replace("[NAME]", file.GetFileNameWithoutExtension());
 			}
 
-			//[C] ersetzen
+			//replace [C]
 			while (newFileName.IndexOf("[C]") != -1)
 			{
 				newFileName = newFileName.Replace("[C]", counterString);
 			}
 
-			//Dateiendung hinzufügen
+			//add extension
 			newFileName += file.GetExtension();
 
-			file.newFilename = newFileName;
+			file.SetNewFilename(newFileName);
 		}
 
 
 
 		//Series Tab =========================================================================
 
-		static bool series_EnableEpisodeTitleControlElementsenabled = true;
+		public string series_episodeTitleBlock;
+		static bool series_EnableEpisodeTitleControlElementsenabled = true; //static var to prevent updating controlElements caused by code
+
 		///<summary>Check for checked CheckBoxes and enable or disable episode title control elements.</summary>
 		private void Series_EnableEpisodeTitleControlElements(object sender, RoutedEventArgs e)
 		{
@@ -450,16 +453,25 @@ namespace Renameprogram
 		}
 
 
+		private void Series_episodeTitleButton_Click(object sender, RoutedEventArgs e)
+		{
+			Series_EpisodeTitleWindow Series_EpisodeTitleWindowInstance = new Series_EpisodeTitleWindow(this);
+			//Series_EpisodeTitleWindowInstance.MainWindowInstance = this;
+			//Series_EpisodeTitleWindowInstance.series_episodeTitleBlockTextBox.Text = series_episodeTitleBlock;
+			Series_EpisodeTitleWindowInstance.ShowDialog();
+		}
+
+
 		///<summary>Updates the newFilemane Atrubute of the given FileElement.</summary>
 		///<param name="file">the FileElement to update newFilename.</param>
 		///<param name="pos">the position index in the files List.</param>
 		private void Series_updateFileName(FileElement file, int pos)
 		{
-			string fileName; //der neue Name der einer Datei zugewiesen werden soll
-			int episodeCounter = 0; //counter der die Episodennummer beschreibt (wird für den Episodentitel benötigt)
-			string episodeNumber; //Zeicenfolde der Episodennummer + Vornullen
-			string LanguageString; //Zeicenfolde des Sprachenzuweisung
-			string episodeTitle = ""; //Zeicenfolde des Namens der Episode
+			string fileName;
+			int episodeCounter; //number of the episode
+			string episodeNumber; //leading zeroes + episodeCounter
+			string LanguageString;
+			string episodeTitle;
 
 			//calculate episodeNumber
 			episodeCounter = pos * (int)series_counterStepsizeNumericUpDown.Value + (int)series_counterStartvalueNumericUpDown.Value;
@@ -492,14 +504,44 @@ namespace Renameprogram
 			}
 
 			//calculate EpisodeTitle
-			if ((series_newFileNameEpisodeTitleCheckBox.IsChecked == true) && EpisodeTitleBlock != null)
+			episodeTitle = Series_CalculateEpisodeTitle(episodeCounter);
+
+			//join fileName
+			fileName = series_newFileNameSeriesNameTextBox.Text;
+			fileName += " Folge ";
+			fileName += episodeNumber;
+			fileName += LanguageString;
+			if (series_newFileNameMinusCheckBox.IsChecked == true)
+			{
+				fileName += " - ";
+			}
+			fileName += episodeTitle;
+
+			//remove illegal Characters
+			fileName = RemoveIllegalChars(fileName);
+
+			//Dateiendung hinzufügen
+			//fileName += System.IO.Path.GetExtension(file.GetFullPath());
+
+			file.SetNewFilename(fileName);
+		}
+
+
+		///<summary>Returns the episodeTitle for new fileName.</summary>
+		///<param name="episodeCounter">The number of the episode you whant the title for.</param>
+		private string Series_CalculateEpisodeTitle(int episodeCounter)
+		{
+			string episodeTitle = "";
+
+			//calculate EpisodeTitle
+			if ((series_newFileNameEpisodeTitleCheckBox.IsChecked == true) && series_episodeTitleBlock != null)
 			{
 				//Randaris
 				if (series_episodeTitleSourceRandarisRadioButton.IsChecked == true)
 				{
-					if (EpisodeTitleBlock.IndexOf("Episode " + episodeCounter.ToString() + "  ") != -1)
+					if (series_episodeTitleBlock.IndexOf("Episode " + episodeCounter.ToString() + "  ") != -1)
 					{
-						episodeTitle = EpisodeTitleBlock.Remove(0, EpisodeTitleBlock.IndexOf("Episode " + episodeCounter.ToString() + " ") + 10 + episodeCounter.ToString().Length);
+						episodeTitle = series_episodeTitleBlock.Remove(0, series_episodeTitleBlock.IndexOf("Episode " + episodeCounter.ToString() + " ") + 10 + episodeCounter.ToString().Length);
 
 						if (episodeTitle.IndexOf(Environment.NewLine) != -1)
 						{
@@ -515,9 +557,9 @@ namespace Renameprogram
 				//Ani Search
 				else if (series_episodeTitleSourceAniSearchRadioButton.IsChecked == true)
 				{
-					if (EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + "\t") != -1)
+					if (series_episodeTitleBlock.IndexOf(episodeCounter.ToString() + "\t") != -1)
 					{
-						episodeTitle = EpisodeTitleBlock.Remove(0, EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + "\t"));
+						episodeTitle = series_episodeTitleBlock.Remove(0, series_episodeTitleBlock.IndexOf(episodeCounter.ToString() + "\t"));
 						episodeTitle = episodeTitle.Remove(0, episodeTitle.IndexOf("\r\n") + 2); //remove "Episode"-Column
 						if (episodeTitle.IndexOf("Filler\t\r\n") == 0)
 						{
@@ -542,9 +584,9 @@ namespace Renameprogram
 				//BS
 				else if (series_episodeTitleSourceBSRadioButton.IsChecked == true)
 				{
-					if (EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + " " + "\t") != -1)
+					if (series_episodeTitleBlock.IndexOf(episodeCounter.ToString() + " " + "\t") != -1)
 					{
-						episodeTitle = EpisodeTitleBlock.Remove(0, EpisodeTitleBlock.IndexOf(episodeCounter.ToString() + " " + "\t") + 2 + episodeCounter.ToString().Length);
+						episodeTitle = series_episodeTitleBlock.Remove(0, series_episodeTitleBlock.IndexOf(episodeCounter.ToString() + " " + "\t") + 2 + episodeCounter.ToString().Length);
 
 						if (episodeTitle.IndexOf(" " + "\t") != -1)
 						{
@@ -566,24 +608,42 @@ namespace Renameprogram
 				episodeTitle = "";
 			}
 
-			//join fileName
-			fileName = series_newFileNameSeriesNameTextBox.Text;
-			fileName += " Folge ";
-			fileName += episodeNumber;
-			fileName += LanguageString;
-			if (series_newFileNameMinusCheckBox.IsChecked == true)
+			return episodeTitle;
+		}
+
+
+
+		//Replace =========================================================================
+
+		///<summary>Updates the newFilemane Atrubute of the given FileElement.</summary>
+		///<param name="file">the FileElement to update newFilename.</param>
+		///<param name="pos">the position index in the files List.</param>
+		private void Replace_updateFileName(FileElement file, int pos)
+		{
+			string newFileName;
+
+
+			if (replace_extensionCheckBox.IsChecked != true)
 			{
-				fileName += " - ";
+				newFileName = file.GetFileNameWithoutExtension();
 			}
-			fileName += episodeTitle;
+			else
+			{
+				newFileName = file.GetFilename();
+			}
 
-			//remove illegal Characters
-			fileName = RemoveIllegalChars(fileName);
+			if (replace_searchTextBox.Text != "")
+			{
+				newFileName = newFileName.Replace(replace_searchTextBox.Text, replace_replaceTextBox.Text);
+			}
 
-			//Dateiendung hinzufügen
-			//fileName += System.IO.Path.GetExtension(file.GetFullPath());
+			if (replace_extensionCheckBox.IsChecked != true)
+			{
+				newFileName += file.GetExtension();
+			}
 
-			file.newFilename = fileName;
+			
+			file.SetNewFilename(newFileName);
 		}
 
 

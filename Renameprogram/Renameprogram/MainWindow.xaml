@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Renameprogram"
         xmlns:eisiWare="clr-namespace:eisiWare;assembly=NumericUpDown"
         mc:Ignorable="d"
-        Title="Renameprogram" Height="600" Width="800" MinWidth="800" MinHeight="500" Background="#FFF0F0F0" Loaded="Main_Loaded">
+        Title="Renameprogram" Height="600" Width="800" MinWidth="800" MinHeight="500" Background="#FFF0F0F0" Loaded="MainWindow_Loaded">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition/>
@@ -27,7 +27,7 @@
 						<ColumnDefinition Width="160"/>
 					</Grid.ColumnDefinitions>
 					<GroupBox x:Name="normal_newNameGroupBox" Header="neuer Name" Margin="10,10,0,0" VerticalAlignment="Top" Height="46">
-						<TextBox x:Name="normal_newFileNameTextBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" Text="[NAME]" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged"/>
+						<TextBox x:Name="normal_newFileNameTextBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged" Text="[NAME]"/>
 					</GroupBox>
 					<Button x:Name="normal_renameButton" Content="Umbenennen" Margin="10" Grid.Column="1" Grid.RowSpan="2" FontWeight="Bold" Click="RenameButton_Click"/>
 					<GroupBox x:Name="normal_optionsGroupBox" Header="Optionen" Margin="10,10,0,10" Grid.Row="1">
@@ -106,7 +106,7 @@
 								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition Width="Auto"/>
 							</Grid.ColumnDefinitions>
-							<TextBox x:Name="series_newFileNameSeriesNameTextBox" Margin="0" TextWrapping="Wrap" Text="[NAME]" VerticalAlignment="Center" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged"/>
+							<TextBox x:Name="series_newFileNameSeriesNameTextBox" Margin="0" TextWrapping="Wrap" VerticalAlignment="Center" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged"/>
 							<TextBlock x:Name="series_newFileNameEpisodeTextBlock" Margin="10,0,0,0" TextWrapping="Wrap" Text="Folge" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1"/>
 							<TextBlock x:Name="series_newFileNameCounterTextBlock" Margin="10,0,0,0" TextWrapping="Wrap" Text="[Zähler]" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2"/>
 							<ComboBox x:Name="series_newFileNameLangugageComboBox" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" SelectionChanged="ControlElementChanged" Grid.Column="3" Width="77">
@@ -168,7 +168,7 @@
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
 									</Grid.ColumnDefinitions>
-									<Button x:Name="series_episodeTitleButton" Content="Titel Einfügen" HorizontalAlignment="Left" Width="100"/>
+									<Button x:Name="series_episodeTitleButton" Content="Titel Einfügen" HorizontalAlignment="Left" Width="100" Click="Series_episodeTitleButton_Click"/>
 									<GroupBox x:Name="series_EpisodeTitleSourceGroupBox" Grid.Column="1" Header="Quelle" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
 										<Grid Margin="{DynamicResource GrpupBoxInterna}" HorizontalAlignment="Left" VerticalAlignment="Top">
 											<Grid.ColumnDefinitions>
@@ -190,8 +190,30 @@
 					</GroupBox>
 				</Grid>
 			</TabItem>
-			<TabItem x:Name="replaceTabItem" Header="Ersetzen">
-				<Grid/>
+			<TabItem x:Name="replaceTabItem" Header="Suchen und ersetzen">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="160"/>
+					</Grid.ColumnDefinitions>
+					<Button x:Name="replace_renameButton" Content="Umbenennen" Margin="10" Grid.Column="1" FontWeight="Bold" Click="RenameButton_Click"/>
+					<Grid Margin="0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<GroupBox x:Name="replace_searchGroupBox" Header="Suchen" Margin="10,10,0,0" VerticalAlignment="Top">
+							<TextBox x:Name="replace_searchTextBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged"/>
+						</GroupBox>
+						<GroupBox x:Name="replace_replaceGroupBox" Header="Ersetzen mit" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Row="1">
+							<TextBox x:Name="replace_replaceTextBox" Margin="{DynamicResource GrpupBoxInterna}" TextWrapping="Wrap" VerticalAlignment="Top" Height="{DynamicResource TextBoxHeigt}" TextChanged="ControlElementChanged"/>
+						</GroupBox>
+						<GroupBox x:Name="replace_optionsGroupBox" Header="Optionen" Margin="10,10,0,10" Grid.Row="2">
+							<CheckBox x:Name="replace_extensionCheckBox" Content="Dateiendung berücksichtigen" HorizontalAlignment="Left" Margin="{DynamicResource GrpupBoxInterna}" VerticalAlignment="Top"/>
+						</GroupBox>
+					</Grid>
+				</Grid>
 			</TabItem>
 		</TabControl>
 		<Grid>

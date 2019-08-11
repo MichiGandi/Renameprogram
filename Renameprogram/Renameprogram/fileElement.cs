@@ -8,36 +8,37 @@ namespace Renameprogram
 {
 	public class FileElement
 	{
-		//Atributes
-		public string directory { get; set; }
-		public string filename { get; set; }
-		public string newFilename { get; set; }
+		//Atributes (these are public to be accessed by the listView via Binding)
+		public string directory { get; set; } //the directory of the file
+		public string filename { get; set; } //the filename including extension
+		public string newFilename { get; set; } //the new filename including extension
 
 		//Construcor
 		public FileElement(string fullPath)
 		{
 			directory = System.IO.Path.GetDirectoryName(fullPath);
 			filename = System.IO.Path.GetFileName(fullPath);
-			newFilename = "-";
+			newFilename = "";
 		}
 
-		//Method
-		public string GetFullPath()
-		{
-			return System.IO.Path.Combine(directory, filename);
-		}
+		//Getter / Setter
+		public string GetDirectory() { return directory; }
+		public void SetDirectory(string directory) { this.directory = directory; }
 
-		public string GetFileNameWithoutExtension()
-		{
-			return System.IO.Path.GetFileNameWithoutExtension(GetFullPath());
-		}
+		public string GetFilename() { return filename; }
+		public void SetFilename(string filename) { this.filename = filename; }
+
+		public string GetNewFilename() { return newFilename; }
+		public void SetNewFilename(string newFilename) { this.newFilename = newFilename; }
+
+		public string GetFullPath() { return System.IO.Path.Combine(directory, filename); }
+
+		public string GetFileNameWithoutExtension() { return System.IO.Path.GetFileNameWithoutExtension(GetFullPath()); }
+
+		public string GetExtension() { return System.IO.Path.GetExtension(GetFullPath()); }
 
 
-		public string GetExtension()
-		{
-			return System.IO.Path.GetExtension(GetFullPath());
-		}
-
+		//standard Functions
 		public static bool operator ==(FileElement file1, FileElement file2)
 		{
 			if (ReferenceEquals(file1, file2))

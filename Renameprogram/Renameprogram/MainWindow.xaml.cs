@@ -24,30 +24,30 @@ namespace Renameprogram
 	public partial class MainWindow : Window
 	{
 		//class atributes
-		public List<FileElement> files2 { get; set; }
-		//List<string> files = new List<string>();
-		//List<string> newFileNames = new List<string>();
-		private bool finishedInitializeComponent = false;
-		public static Visibility IsDebug
+		public List<FileElement> Files { get; set; }
+		private readonly bool finishedInitializeComponent = false;
+
+		/*public static Visibility IsDebug
 		{
 #if DEBUG
 			get { return Visibility.Visible; }
 #else
 			get { return Visibility.Collapsed; }
 #endif
-		}
+		}*/
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
-			files2 = new List<FileElement>();
+			Files = new List<FileElement>();
 
 			DataContext = this;
 
 			finishedInitializeComponent = true;
 
 			EnableButtons();
+			Series_EnableEpisodeTitleControlElements();
 		}
 
 
@@ -80,8 +80,7 @@ namespace Renameprogram
 
 		private void SelectFileButton_Click(object sender, RoutedEventArgs e)
 		{
-			OpenFileDialog selectFileDialog = new OpenFileDialog();
-			selectFileDialog.Multiselect = true;
+			OpenFileDialog selectFileDialog = new OpenFileDialog { Multiselect = true };
 
 			if (selectFileDialog.ShowDialog() == true)
 			{
@@ -106,7 +105,7 @@ namespace Renameprogram
 		{
 			foreach (FileElement selectedFile in fileListView.SelectedItems)
 			{
-				files2.Remove(selectedFile);
+				Files.Remove(selectedFile);
 			}
 
 			UpdateNewFileNames();
@@ -117,7 +116,7 @@ namespace Renameprogram
 
 		private void ClearButton_Click(object sender, RoutedEventArgs e)
 		{
-			files2.Clear();
+			Files.Clear();
 
 			UpdateNewFileNames();
 			
@@ -132,7 +131,7 @@ namespace Renameprogram
 			List<int> selectedIndizes = new List<int>();
 			foreach (FileElement item in fileListView.SelectedItems)
 			{
-				selectedIndizes.Add(files2.IndexOf(item));
+				selectedIndizes.Add(Files.IndexOf(item));
 			}
 			selectedIndizes.Sort();
 
@@ -148,8 +147,8 @@ namespace Renameprogram
 					if (selectedIndizes[i] > stopRange)
 					{
 						//insert above and remove original
-						files2.Insert(selectedIndizes[i] - 1, files2[selectedIndizes[i]]); //insert item one pos higher
-						files2.RemoveAt(selectedIndizes[i] + 1); //remove old item
+						Files.Insert(selectedIndizes[i] - 1, Files[selectedIndizes[i]]); //insert item one pos higher
+						Files.RemoveAt(selectedIndizes[i] + 1); //remove old item
 
 						//swap Objects
 						//eElement fileToMove = files2[selectedIndizes[i]];
@@ -172,11 +171,11 @@ namespace Renameprogram
 
 				for (int i = selectedIndizes.Count - 1; i >= 0; i--)
 				{
-					if (selectedIndizes[i] < (files2.Count - stopRange) - 1)
+					if (selectedIndizes[i] < (Files.Count - stopRange) - 1)
 					{
 						//insert above and remove original
-						files2.Insert(selectedIndizes[i] + 2, files2[selectedIndizes[i]]); //insert item one pos lower
-						files2.RemoveAt(selectedIndizes[i]); //remove old item
+						Files.Insert(selectedIndizes[i] + 2, Files[selectedIndizes[i]]); //insert item one pos lower
+						Files.RemoveAt(selectedIndizes[i]); //remove old item
 
 						//swap Objects
 						//eElement fileToMove = files2[selectedIndizes[i]];
@@ -186,7 +185,7 @@ namespace Renameprogram
 						//update activeFiles
 						selectedIndizes[i]++;
 					}
-					else if (selectedIndizes[i] == (files2.Count - stopRange) - 1)
+					else if (selectedIndizes[i] == (Files.Count - stopRange) - 1)
 					{
 						stopRange++;
 					}
@@ -200,7 +199,7 @@ namespace Renameprogram
 			fileListView.SelectedItems.Clear();
 			for (int i = 0; i < selectedIndizes.Count; i++)
 			{
-				fileListView.SelectedItems.Add(files2[selectedIndizes[i]]); //should work, but doesn't
+				fileListView.SelectedItems.Add(Files[selectedIndizes[i]]); //should work, but doesn't
 			}
 
 			UpdateNewFileNames();
@@ -210,7 +209,7 @@ namespace Renameprogram
 		///<summary>Check for empty fileList or newFileNameTextBox and enabble or disable buttons.</summary>
 		private void EnableButtons()
 		{
-			bool activate = files2.Count() > 0;
+			bool activate = Files.Count() > 0;
 
 			moveUpButton.IsEnabled = activate;
 			moveDownButton.IsEnabled = activate;
@@ -228,10 +227,10 @@ namespace Renameprogram
 		{
 			foreach (string fileToAdd in newFiles)
 			{
-				files2.Add(new FileElement(fileToAdd));
+				Files.Add(new FileElement(fileToAdd));
 			}
 
-			RemoveMultibleAccuringFiles(files2);
+			RemoveMultibleAccuringFiles(Files);
 
 			UpdateNewFileNames();
 
@@ -262,7 +261,7 @@ namespace Renameprogram
 			if (finishedInitializeComponent)
 			{
 				//if sender is a TextBox
-				if (!ReferenceEquals(sender as TextBox, null))
+				if (!((sender as TextBox) is null))
 				{
 					((TextBox)sender).Text = RemoveIllegalChars(((TextBox)sender).Text);
 					EnableButtons();
@@ -279,23 +278,23 @@ namespace Renameprogram
 		{
 			if (ReferenceEquals(mainTabControl.SelectedItem, normalTabItem))
 			{
-				for (int i = 0; i < files2.Count; i++)
+				for (int i = 0; i < Files.Count; i++)
 				{
-					Normal_updateFileName(files2[i], i);
+					Normal_updateFileName(Files[i], i);
 				}
 			}
 			else if (ReferenceEquals(mainTabControl.SelectedItem, seriesTabItem))
 			{
-				for (int i = 0; i < files2.Count; i++)
+				for (int i = 0; i < Files.Count; i++)
 				{
-					Series_updateFileName(files2[i], i);
+					Series_updateFileName(Files[i], i);
 				}
 			}
 			else if (ReferenceEquals(mainTabControl.SelectedItem, replaceTabItem))
 			{
-				for (int i = 0; i < files2.Count; i++)
+				for (int i = 0; i < Files.Count; i++)
 				{
-					Replace_updateFileName(files2[i], i);
+					Replace_updateFileName(Files[i]);
 				}
 			}
 
@@ -307,13 +306,13 @@ namespace Renameprogram
 		{
 			//rename files
 
-			for (int i = 0; i < files2.Count; i++)
+			for (int i = 0; i < Files.Count; i++)
 			{
-				System.IO.File.Move(files2[i].GetFullPath(), System.IO.Path.Combine(files2[i].GetDirectory(), files2[i].GetNewFilename()));
+				System.IO.File.Move(Files[i].GetFullPath(), System.IO.Path.Combine(Files[i].GetDirectory(), Files[i].GetNewFilename()));
 			}
 
 			//Clear file list
-			files2.Clear();
+			Files.Clear();
 			UpdateNewFileNames();
 
 			//Show confirmation MessageBox
@@ -396,59 +395,66 @@ namespace Renameprogram
 		//Series Tab =========================================================================
 
 		public string series_episodeTitleBlock;
-		static bool series_EnableEpisodeTitleControlElementsenabled = true; //static var to prevent updating controlElements caused by code
+		static bool Series_EpisodeTitleControlElementsCheckChangedEnabled = true; //static var to prevent updating controlElements caused by code
 
-		///<summary>Check for checked CheckBoxes and enable or disable episode title control elements.</summary>
-		private void Series_EnableEpisodeTitleControlElements(object sender, RoutedEventArgs e)
+		
+		private void Series_EpisodeTitleControlElementsCheckChanged(object sender, RoutedEventArgs e)
 		{
-			if (series_EnableEpisodeTitleControlElementsenabled && finishedInitializeComponent)
+			if (Series_EpisodeTitleControlElementsCheckChangedEnabled && finishedInitializeComponent)
 			{
-				series_EnableEpisodeTitleControlElementsenabled = false;
+				Series_EpisodeTitleControlElementsCheckChangedEnabled = false;
 
-				if (series_newFileNameMinusCheckBox.IsChecked == true)
-				{
-					//enable CheckBox
-					series_newFileNameEpisodeTitleCheckBox.IsEnabled = true;
-				}
-				else
-				{
-					//disable CheckBox
-					series_newFileNameEpisodeTitleCheckBox.IsChecked = false;
-					series_newFileNameEpisodeTitleCheckBox.IsEnabled = false;
-				}
-
-				if (series_newFileNameEpisodeTitleCheckBox.IsChecked == true)
-				{
-					//enable RadioButtons
-					series_episodeTitleSourceRandarisRadioButton.IsEnabled = true;
-					series_episodeTitleSourceBSRadioButton.IsEnabled = true;
-					series_episodeTitleSourceAniSearchRadioButton.IsEnabled = true;
-				}
-				else
-				{
-					//disable RadioButtons
-					series_episodeTitleSourceRandarisRadioButton.IsChecked = false;
-					series_episodeTitleSourceRandarisRadioButton.IsEnabled = false;
-					series_episodeTitleSourceBSRadioButton.IsChecked = false;
-					series_episodeTitleSourceBSRadioButton.IsEnabled = false;
-					series_episodeTitleSourceAniSearchRadioButton.IsChecked = false;
-					series_episodeTitleSourceAniSearchRadioButton.IsEnabled = false;
-				}
-
-				if ((series_episodeTitleSourceRandarisRadioButton.IsChecked == true) || (series_episodeTitleSourceBSRadioButton.IsChecked == true) || (series_episodeTitleSourceAniSearchRadioButton.IsChecked == true))
-				{
-					//enable Button
-					series_episodeTitleButton.IsEnabled = true;
-				}
-				else
-				{
-					//disable Button
-					series_episodeTitleButton.IsEnabled = false;
-				}
+				Series_EnableEpisodeTitleControlElements();
 
 				UpdateNewFileNames();
 
-				series_EnableEpisodeTitleControlElementsenabled = true;
+				Series_EpisodeTitleControlElementsCheckChangedEnabled = true;
+			}
+		}
+
+
+		///<summary>Check for checked CheckBoxes and enable or disable episode title control elements.</summary>
+		private void Series_EnableEpisodeTitleControlElements()
+		{
+			if (series_newFileNameMinusCheckBox.IsChecked == true)
+			{
+				//enable CheckBox
+				series_newFileNameEpisodeTitleCheckBox.IsEnabled = true;
+			}
+			else
+			{
+				//disable CheckBox
+				series_newFileNameEpisodeTitleCheckBox.IsChecked = false;
+				series_newFileNameEpisodeTitleCheckBox.IsEnabled = false;
+			}
+
+			if (series_newFileNameEpisodeTitleCheckBox.IsChecked == true)
+			{
+				//enable RadioButtons
+				series_episodeTitleSourceRandarisRadioButton.IsEnabled = true;
+				series_episodeTitleSourceBSRadioButton.IsEnabled = true;
+				series_episodeTitleSourceAniSearchRadioButton.IsEnabled = true;
+			}
+			else
+			{
+				//disable RadioButtons
+				series_episodeTitleSourceRandarisRadioButton.IsChecked = false;
+				series_episodeTitleSourceRandarisRadioButton.IsEnabled = false;
+				series_episodeTitleSourceBSRadioButton.IsChecked = false;
+				series_episodeTitleSourceBSRadioButton.IsEnabled = false;
+				series_episodeTitleSourceAniSearchRadioButton.IsChecked = false;
+				series_episodeTitleSourceAniSearchRadioButton.IsEnabled = false;
+			}
+
+			if ((series_episodeTitleSourceRandarisRadioButton.IsChecked == true) || (series_episodeTitleSourceBSRadioButton.IsChecked == true) || (series_episodeTitleSourceAniSearchRadioButton.IsChecked == true))
+			{
+				//enable Button
+				series_episodeTitleButton.IsEnabled = true;
+			}
+			else
+			{
+				//disable Button
+				series_episodeTitleButton.IsEnabled = false;
 			}
 		}
 
@@ -531,7 +537,7 @@ namespace Renameprogram
 		///<param name="episodeCounter">The number of the episode you whant the title for.</param>
 		private string Series_CalculateEpisodeTitle(int episodeCounter)
 		{
-			string episodeTitle = "";
+			string episodeTitle;
 
 			//calculate EpisodeTitle
 			if ((series_newFileNameEpisodeTitleCheckBox.IsChecked == true) && series_episodeTitleBlock != null)
@@ -618,7 +624,7 @@ namespace Renameprogram
 		///<summary>Updates the newFilemane Atrubute of the given FileElement.</summary>
 		///<param name="file">the FileElement to update newFilename.</param>
 		///<param name="pos">the position index in the files List.</param>
-		private void Replace_updateFileName(FileElement file, int pos)
+		private void Replace_updateFileName(FileElement file)
 		{
 			string newFileName;
 
@@ -651,7 +657,7 @@ namespace Renameprogram
 		//Debug =========================================================================
 		private void DebugButton_Click(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show(files2[0].GetFullPath());
+			MessageBox.Show(Files[0].GetFullPath());
 		}
 	}
 }

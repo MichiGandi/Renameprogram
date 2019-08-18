@@ -116,8 +116,8 @@
 								<ComboBoxItem Content="[EngSub]"/>
 								<ComboBoxItem Content="[EngDub]"/>
 							</ComboBox>
-							<CheckBox x:Name="series_newFileNameMinusCheckBox" Content="-" Grid.Column="4" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Unchecked="Series_EnableEpisodeTitleControlElements" Checked="Series_EnableEpisodeTitleControlElements"/>
-							<CheckBox x:Name="series_newFileNameEpisodeTitleCheckBox" Content="Episoden Titel" Grid.Column="5" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Checked="Series_EnableEpisodeTitleControlElements" Unchecked="Series_EnableEpisodeTitleControlElements"/>
+							<CheckBox x:Name="series_newFileNameMinusCheckBox" Content="-" Grid.Column="4" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Unchecked="Series_EpisodeTitleControlElementsCheckChanged" Checked="Series_EpisodeTitleControlElementsCheckChanged"/>
+							<CheckBox x:Name="series_newFileNameEpisodeTitleCheckBox" Content="Episoden Titel" Grid.Column="5" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Checked="Series_EpisodeTitleControlElementsCheckChanged" Unchecked="Series_EpisodeTitleControlElementsCheckChanged"/>
 						</Grid>
 					</GroupBox>
 					<Button x:Name="series_renameButton" Content="Umbenennen" Margin="10" Grid.Column="1" Grid.RowSpan="2" FontWeight="Bold" Click="RenameButton_Click"/>
@@ -179,9 +179,9 @@
 												<RowDefinition Height="Auto"/>
 												<RowDefinition Height="Auto"/>
 											</Grid.RowDefinitions>
-											<RadioButton x:Name="series_episodeTitleSourceRandarisRadioButton" Content="Randaris" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Series_EnableEpisodeTitleControlElements"/>
-											<RadioButton x:Name="series_episodeTitleSourceBSRadioButton" Content="BS" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="10,0,0,0" Checked="Series_EnableEpisodeTitleControlElements"/>
-											<RadioButton x:Name="series_episodeTitleSourceAniSearchRadioButton" Content="Ani Search" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0" Grid.Row="1" Grid.ColumnSpan="2" Checked="Series_EnableEpisodeTitleControlElements"/>
+											<RadioButton x:Name="series_episodeTitleSourceRandarisRadioButton" Content="Randaris" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Series_EpisodeTitleControlElementsCheckChanged"/>
+											<RadioButton x:Name="series_episodeTitleSourceBSRadioButton" Content="BS" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="10,0,0,0" Checked="Series_EpisodeTitleControlElementsCheckChanged"/>
+											<RadioButton x:Name="series_episodeTitleSourceAniSearchRadioButton" Content="Ani Search" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0" Grid.Row="1" Grid.ColumnSpan="2" Checked="Series_EpisodeTitleControlElementsCheckChanged"/>
 										</Grid>
 									</GroupBox>
 								</Grid>
@@ -222,7 +222,7 @@
 				<ColumnDefinition Width="170"/>
 			</Grid.ColumnDefinitions>
 			<GroupBox x:Name="fileGroupBox" Header="Dateien zum umbenennen" Margin="10,10,0,0">
-				<ListView x:Name="fileListView" Margin="{DynamicResource GrpupBoxInterna}" ItemsSource="{Binding files2}" IsSynchronizedWithCurrentItem="True" SelectionMode="Extended" AllowDrop="True" Drop="FileListView_Drop">
+				<ListView x:Name="fileListView" Margin="{DynamicResource GrpupBoxInterna}" ItemsSource="{Binding Files}" IsSynchronizedWithCurrentItem="True" SelectionMode="Extended" AllowDrop="True" Drop="FileListView_Drop">
 					<ListView.View>
 						<GridView>
 							<GridViewColumn Header="Verzeichnis" Width="Auto" DisplayMemberBinding="{Binding directory}"/>

@@ -529,7 +529,7 @@ namespace Renameprogram
 			//Dateiendung hinzufügen
 			//fileName += System.IO.Path.GetExtension(file.GetFullPath());
 
-			file.SetNewFilename(fileName);
+			file.SetFileNameWithoutExtension(fileName);
 		}
 
 

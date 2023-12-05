@@ -34,6 +34,11 @@ namespace Renameprogram
 		public string GetFullPath() { return System.IO.Path.Combine(directory, filename); }
 
 		public string GetFileNameWithoutExtension() { return System.IO.Path.GetFileNameWithoutExtension(GetFullPath()); }
+		public void SetFileNameWithoutExtension(string newFilename)
+		{
+			string fileExtension = GetExtension();
+			this.newFilename = newFilename + fileExtension;
+		}
 
 		public string GetExtension() { return System.IO.Path.GetExtension(GetFullPath()); }
 
